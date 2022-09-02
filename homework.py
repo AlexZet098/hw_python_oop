@@ -25,7 +25,7 @@ class InfoMessage:
 class Training:
     """Базовый класс тренировки."""
     M_IN_KM: float = 1000
-    min_in_hours = 60
+    min_in_hours: int = 60
     LEN_STEP: float = 0.65
 
     def __init__(self,
@@ -39,18 +39,15 @@ class Training:
 
     def get_distance(self):
         """Получить дистанцию в км."""
-        distance = self.action * self.LEN_STEP / self.M_IN_KM
-        return distance
+        return self.action * self.LEN_STEP / self.M_IN_KM
 
     def get_mean_speed(self):
         """Получить среднюю скорость движения."""
-        speed = self.get_distance() / self.duration
-        return speed
+        return self.get_distance() / self.duration
 
     def get_spent_calories(self) -> float:
         """Получить количество затраченных калорий."""
-
-    pass
+        pass
 
     def show_training_info(self) -> InfoMessage:
         """Вернуть информационное сообщение о выполненной тренировке."""
@@ -64,18 +61,11 @@ class Training:
 
 class Running(Training):
     """Тренировка: бег."""
-    coff_calorie_1 = 18
-    coff_calorie_2 = 20
+    coff_calorie_1: float = 18
+    coff_calorie_2: float = 20
 
-    def __int__(self,
-                action: int,
-                duration: float,
-                weight: float
-                ):
-        self.weight = weight
-        self.duration = duration
-        self.action = action
-        super().__init__(action, duration, weight)
+    def __int__(self):
+        super().__init__(self.action, self.duration, self.weight)
 
     def get_spent_calories(self) -> float:
         spent_calories = ((self.coff_calorie_1 * self.get_mean_speed()
@@ -90,20 +80,19 @@ class SportsWalking(Training):
     coff_calories_1: float = 0.035
     coff_calories_2: float = 2.0
     coff_calories_3: float = 0.029
+    min_in_hours: int = 60
 
-    def __init__(self, action: int,
-                 duration: float,
-                 weight: float,
+    def __init__(self,
                  height: float
                  ) -> None:
-        super().__init__(action, duration, weight)
+        super().__init__(self.action, self.duration, self.weight)
         self.height = height
 
     def get_spent_calories(self) -> float:
         return ((self.coff_calories_1 * self.weight)
                 + ((self.get_mean_speed() ** 2 // self.height)
                 * self.coff_calories_3
-                * self.weight)) * self.duration * 60
+                * self.weight)) * self.duration * self.min_in_hours
 
 
 class Swimming(Training):
