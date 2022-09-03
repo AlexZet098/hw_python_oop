@@ -1,9 +1,3 @@
-"""Модуль с константами
-pytest ругается на отсутствие констант в классах
-поэтому остались прописаны в классах."""
-import constants
-
-
 class InfoMessage:
     """Информационное сообщение о тренировке."""
 
@@ -69,14 +63,11 @@ class Running(Training):
     COFF_CALORIE_RUN_1: float = 18
     COFF_CALORIE_RUN_2: float = 20
 
-    def __int__(self):
-        super().__init__(self.action, self.duration, self.weight)
-
     def get_spent_calories(self) -> float:
-        return ((constants.COFF_CALORIE_RUN_1 * self.get_mean_speed()
-                 - constants.COFF_CALORIE_RUN_2) * self.weight
-                / constants.M_IN_KM * self.duration
-                * constants.MIN_IN_HOURS)
+        return ((self.COFF_CALORIE_RUN_1 * self.get_mean_speed()
+                 - self.COFF_CALORIE_RUN_2) * self.weight
+                / self.M_IN_KM * self.duration
+                * self.MIN_IN_HOURS)
 
 
 class SportsWalking(Training):
@@ -95,10 +86,10 @@ class SportsWalking(Training):
         self.height = height
 
     def get_spent_calories(self) -> float:
-        return ((constants.COFF_CALORIES_WLK_1 * self.weight)
+        return ((self.COFF_CALORIES_WLK_1 * self.weight)
                 + ((self.get_mean_speed() ** 2 // self.height)
-                   * constants.COFF_CALORIES_WLK_3
-                   * self.weight)) * self.duration * constants.MIN_IN_HOURS
+                   * self.COFF_CALORIES_WLK_3
+                   * self.weight)) * self.duration * self.MIN_IN_HOURS
 
 
 class Swimming(Training):
@@ -119,23 +110,23 @@ class Swimming(Training):
 
     def get_mean_speed(self) -> float:
         """Получить среднюю скорость движения."""
-        return (self.length_pool * self.count_pool / constants.M_IN_KM
+        return (self.length_pool * self.count_pool / self.M_IN_KM
                 / self.duration)
 
     def get_spent_calories(self) -> float:
         """Получить количество затраченных калорий."""
 
-        return ((self.get_mean_speed() + constants.COFF_CALORIE_SWM_1)
-                * constants.COFF_CALORIE_SWM_2 * self.weight)
+        return ((self.get_mean_speed() + self.COFF_CALORIE_SWM_1)
+                * self.COFF_CALORIE_SWM_2 * self.weight)
 
     def get_distance(self) -> float:
         """Получить дистанцию в км."""
-        return self.action * constants.LEN_STEP / self.M_IN_KM
+        return self.action * self.LEN_STEP / self.M_IN_KM
 
 
 def read_package(workout_type: str, data: list) -> Training:
     """Прочитать данные полученные от датчиков."""
-    training_dict: object = {
+    training_dict: dict[str, object] = {
         'SWM': Swimming,
         'RUN': Running,
         'WLK': SportsWalking}
